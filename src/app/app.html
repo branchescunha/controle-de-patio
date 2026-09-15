@@ -56,7 +56,7 @@
         </button>
       </div>
 
-      <button type="button" class="primary-button">
+      <button type="button" class="primary-button" (click)="openVehicleModal()">
         <span class="plus">+</span>
         Registrar Nova Entrada
       </button>
@@ -79,9 +79,106 @@
       pátio.
     </p>
 
-    <button type="button" class="primary-button">
+    <button type="button" class="primary-button" (click)="openVehicleModal()">
       <span class="plus">+</span>
       Registrar primeiro veículo
     </button>
   </section>
 </main>
+
+@if (isVehicleModalOpen) {
+  <div class="modal-backdrop" data-testid="vehicle-modal">
+    <div class="modal">
+      <div class="modal-header">
+        <div>
+          <h2>Nova Entrada de Veículo</h2>
+          <p>Registre o veículo assim que ele entrar no pátio.</p>
+        </div>
+
+        <button
+          type="button"
+          class="modal-close"
+          aria-label="Fechar modal"
+          (click)="closeVehicleModal()"
+        >
+          ×
+        </button>
+      </div>
+
+      <form [formGroup]="vehicleForm" (ngSubmit)="submitVehicle()">
+        <div class="form-field">
+          <label for="ownerName">Nome do proprietário</label>
+          <input
+            id="ownerName"
+            type="text"
+            formControlName="ownerName"
+            placeholder="Ex: Maria Aparecida Souza"
+            [class.input-error]="isFieldInvalid('ownerName')"
+          />
+
+          @if (isFieldInvalid('ownerName')) {
+            <span class="field-error">Informe o nome do proprietário.</span>
+          }
+        </div>
+
+        <div class="form-field">
+          <label for="plate">Placa do veículo</label>
+          <input
+            id="plate"
+            type="text"
+            formControlName="plate"
+            placeholder="Ex: ABC1D23"
+            [class.input-error]="isFieldInvalid('plate')"
+          />
+
+          @if (isFieldInvalid('plate')) {
+            <span class="field-error">Informe a placa do veículo.</span>
+          }
+        </div>
+
+        <div class="form-field">
+          <label for="model">Modelo</label>
+          <input
+            id="model"
+            type="text"
+            formControlName="model"
+            placeholder="Ex: Ford Ka 2018"
+            [class.input-error]="isFieldInvalid('model')"
+          />
+
+          @if (isFieldInvalid('model')) {
+            <span class="field-error">Informe o modelo do veículo.</span>
+          }
+        </div>
+
+        <div class="form-field">
+          <label for="entryDate">Data de entrada</label>
+          <input
+            id="entryDate"
+            type="date"
+            formControlName="entryDate"
+            [class.input-error]="isFieldInvalid('entryDate')"
+          />
+
+          @if (isFieldInvalid('entryDate')) {
+            <span class="field-error">Informe a data de entrada.</span>
+          }
+        </div>
+
+        @if (formSubmitted && vehicleForm.invalid) {
+          <div class="form-alert">
+            Preencha todos os campos obrigatórios antes de cadastrar o veículo.
+          </div>
+        }
+
+        <div class="modal-actions">
+          <button type="button" class="secondary-button" (click)="closeVehicleModal()">
+            Cancelar
+          </button>
+
+          <button type="submit" class="primary-button">Cadastrar Veículo</button>
+        </div>
+      </form>
+    </div>
+  </div>
+}
