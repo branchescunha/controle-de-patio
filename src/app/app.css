@@ -1,0 +1,258 @@
+:host {
+  display: block;
+  min-height: 100vh;
+}
+
+.app-header {
+  height: 64px;
+  background: #ffffff;
+  border-bottom: 1px solid #e4e9ef;
+}
+
+.header-content {
+  width: min(100% - 64px, 1280px);
+  height: 100%;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-family: 'Sora', system-ui, sans-serif;
+  font-size: 15.5px;
+  font-weight: 600;
+}
+
+.brand-icon {
+  width: 34px;
+  height: 34px;
+  border-radius: 8px;
+  background: #2b57c4;
+}
+
+.vehicle-counter {
+  padding: 7px 14px;
+  border-radius: 999px;
+  background: #d8f3e7;
+  color: #05603b;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.main-content {
+  width: min(100% - 64px, 1280px);
+  margin: 0 auto;
+  padding: 32px 0;
+}
+
+.page-heading {
+  margin-bottom: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+}
+
+.page-heading h1 {
+  margin: 0;
+  color: #1d2433;
+  font-family: 'Sora', system-ui, sans-serif;
+  font-size: 28px;
+  font-weight: 700;
+}
+
+.page-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.view-toggle {
+  display: inline-flex;
+  padding: 4px;
+  border: 1px solid #e4e9ef;
+  border-radius: 9px;
+  background: #ffffff;
+}
+
+.view-toggle button {
+  padding: 7px 12px;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  color: #9aa3b2;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.view-toggle button.active {
+  background: #e7edfb;
+  color: #2b57c4;
+}
+
+.primary-button {
+  padding: 12px 20px;
+  border: 0;
+  border-radius: 12px;
+  background: #2b57c4;
+  color: #ffffff;
+  font-family: 'Sora', system-ui, sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  transition:
+    background 0.15s ease,
+    transform 0.15s ease;
+}
+
+.primary-button:hover {
+  background: #1f449e;
+}
+
+.primary-button:active {
+  transform: translateY(1px);
+}
+
+.empty-state {
+  min-height: 476px;
+  padding: 64px 24px;
+  border: 1px solid #e4e9ef;
+  border-radius: 12px;
+  background: #ffffff;
+  box-shadow:
+    0 1px 2px rgba(29, 36, 51, 0.04),
+    0 10px 28px -14px rgba(29, 36, 51, 0.14);
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.empty-icon {
+  width: 56px;
+  height: 56px;
+  margin-bottom: 16px;
+  border: 1px solid #e4e9ef;
+  border-radius: 16px;
+  background: #f6f8fa;
+}
+
+.empty-state h2 {
+  margin: 0;
+  color: #1d2433;
+  font-family: 'Sora', system-ui, sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.empty-state p {
+  max-width: 320px;
+  margin: 8px 0 24px;
+  color: #6b7484;
+  font-size: 13.5px;
+  line-height: 1.6;
+}
+
+@media (max-width: 768px) {
+  .header-content,
+  .main-content {
+    width: min(100% - 32px, 1280px);
+  }
+
+  .page-heading {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .page-actions {
+    width: 100%;
+    flex-wrap: wrap;
+  }
+
+  .primary-button {
+    flex: 1;
+  }
+
+  .empty-state {
+    min-height: 400px;
+  }
+}
+
+.brand-icon,
+.counter-icon,
+.empty-icon,
+.view-toggle button,
+.primary-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.brand-icon {
+  color: #ffffff;
+}
+
+.brand-icon svg {
+  width: 17px;
+  height: 17px;
+}
+
+.vehicle-counter {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.counter-icon {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: #0e9f6e;
+  color: #ffffff;
+}
+
+.counter-icon svg {
+  width: 12px;
+  height: 12px;
+}
+
+.view-toggle button {
+  gap: 6px;
+}
+
+.view-toggle button svg {
+  width: 15px;
+  height: 15px;
+}
+
+.primary-button {
+  gap: 8px;
+}
+
+.plus {
+  font-size: 19px;
+  font-weight: 400;
+  line-height: 1;
+}
+
+.empty-icon {
+  color: #9aa3b2;
+}
+
+.empty-icon svg {
+  width: 26px;
+  height: 26px;
+}
+
+svg {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
