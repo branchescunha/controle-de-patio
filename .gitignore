@@ -10,6 +10,15 @@
 /node_modules
 npm-debug.log
 yarn-error.log
+*.log
+
+# Environment
+.env
+.env.*
+!.env.example
+
+# Vercel
+.vercel/
 
 # IDEs and editors
 .idea/
@@ -24,13 +33,13 @@ yarn-error.log
 .vscode/*
 !.vscode/settings.json
 !.vscode/tasks.json
-!.vscode/launch.json
 !.vscode/extensions.json
-!.vscode/mcp.json
 .history/*
 
-# Miscellaneous
+# Angular
 /.angular/cache
+
+# Miscellaneous
 .sass-cache/
 /connect.lock
 /coverage
