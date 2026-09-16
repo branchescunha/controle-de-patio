@@ -13,6 +13,7 @@ describe('App', () => {
   it('should create the app', () => {
     const fixture = TestBed.createComponent(App);
     const app = fixture.componentInstance;
+
     expect(app).toBeTruthy();
   });
 
@@ -128,7 +129,6 @@ describe('App', () => {
       'parking-control-vehicles',
       JSON.stringify([
         {
-          id: '1',
           ownerName: 'André Vinícius',
           plate: 'ABC1D23',
           model: 'Mitsubishi Lancer GT',
@@ -239,14 +239,86 @@ describe('App', () => {
 
     expect(app.vehicles).toHaveLength(1);
 
-    const vehicleId = app.vehicles[0].id;
+    const vehiclePlate = app.vehicles[0].plate;
 
-    app.removeVehicle(vehicleId);
+    app.removeVehicle(vehiclePlate);
 
     expect(app.vehicles).toHaveLength(0);
 
     const storedVehicles = JSON.parse(localStorage.getItem('parking-control-vehicles') ?? '[]');
 
     expect(storedVehicles).toHaveLength(0);
+  });
+
+  it('should prevent duplicate plates ignoring case', () => {
+    const fixture = TestBed.createComponent(App);
+    const app = fixture.componentInstance;
+
+    app.openVehicleModal();
+
+    app.vehicleForm.setValue({
+      ownerName: 'André Vinícius',
+      plate: 'ABC1D23',
+      model: 'Mitsubishi Lancer GT',
+      entryDate: '2026-09-15',
+    });
+
+    app.submitVehicle();
+
+    expect(app.vehicles).toHaveLength(1);
+
+    app.openVehicleModal();
+
+    app.vehicleForm.setValue({
+      ownerName: 'Outro Proprietário',
+      plate: 'abc1d23',
+      model: 'Honda Civic',
+      entryDate: '2026-09-16',
+    });
+
+    app.submitVehicle();
+    fixture.detectChanges();
+
+    expect(app.vehicles).toHaveLength(1);
+    expect(app.isVehicleModalOpen).toBe(true);
+
+    const compiled = fixture.nativeElement as HTMLElement;
+
+    expect(compiled.textContent).toContain('Já existe um veículo cadastrado com esta placa.');
+  });
+
+  it('should remove the correct vehicle using its plate', () => {
+    const fixture = TestBed.createComponent(App);
+    const app = fixture.componentInstance;
+
+    app.vehicleForm.setValue({
+      ownerName: 'André Vinícius',
+      plate: 'ABC1D23',
+      model: 'Mitsubishi Lancer GT',
+      entryDate: '2026-09-15',
+    });
+
+    app.submitVehicle();
+
+    app.vehicleForm.setValue({
+      ownerName: 'Maria Souza',
+      plate: 'DEF4G56',
+      model: 'Honda Civic',
+      entryDate: '2026-09-16',
+    });
+
+    app.submitVehicle();
+
+    expect(app.vehicles).toHaveLength(2);
+
+    app.removeVehicle('ABC1D23');
+
+    expect(app.vehicles).toHaveLength(1);
+    expect(app.vehicles[0].plate).toBe('DEF4G56');
+
+    const storedVehicles = JSON.parse(localStorage.getItem('parking-control-vehicles') ?? '[]');
+
+    expect(storedVehicles).toHaveLength(1);
+    expect(storedVehicles[0].plate).toBe('DEF4G56');
   });
 });

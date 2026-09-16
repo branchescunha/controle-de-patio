@@ -2,7 +2,6 @@ import { Component } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 
 interface Vehicle {
-  id: string;
   ownerName: string;
   plate: string;
   model: string;
@@ -20,6 +19,7 @@ export class App {
 
   isVehicleModalOpen = false;
   formSubmitted = false;
+  duplicatePlateError = false;
   viewMode: 'cards' | 'table' = 'cards';
 
   vehicles: Vehicle[] = [];
@@ -58,11 +58,13 @@ export class App {
   closeVehicleModal(): void {
     this.isVehicleModalOpen = false;
     this.formSubmitted = false;
+    this.duplicatePlateError = false;
     this.vehicleForm.reset();
   }
 
   submitVehicle(): void {
     this.formSubmitted = true;
+    this.duplicatePlateError = false;
 
     if (this.vehicleForm.invalid) {
       this.vehicleForm.markAllAsTouched();
@@ -70,11 +72,20 @@ export class App {
     }
 
     const formValue = this.vehicleForm.getRawValue();
+    const normalizedPlate = formValue.plate.trim().toUpperCase();
+
+    const plateAlreadyExists = this.vehicles.some(
+      (vehicle) => vehicle.plate.trim().toUpperCase() === normalizedPlate,
+    );
+
+    if (plateAlreadyExists) {
+      this.duplicatePlateError = true;
+      return;
+    }
 
     const vehicle: Vehicle = {
-      id: Date.now().toString(),
       ownerName: formValue.ownerName.trim(),
-      plate: formValue.plate.trim().toUpperCase(),
+      plate: normalizedPlate,
       model: formValue.model.trim(),
       entryDate: formValue.entryDate,
     };
@@ -85,8 +96,12 @@ export class App {
     this.closeVehicleModal();
   }
 
-  removeVehicle(vehicleId: string): void {
-    this.vehicles = this.vehicles.filter((vehicle) => vehicle.id !== vehicleId);
+  removeVehicle(vehiclePlate: string): void {
+    const normalizedPlate = vehiclePlate.trim().toUpperCase();
+
+    this.vehicles = this.vehicles.filter(
+      (vehicle) => vehicle.plate.trim().toUpperCase() !== normalizedPlate,
+    );
 
     this.saveVehicles();
   }
@@ -107,6 +122,10 @@ export class App {
     } catch {
       this.vehicles = [];
     }
+  }
+
+  clearDuplicatePlateError(): void {
+    this.duplicatePlateError = false;
   }
 
   isFieldInvalid(controlName: 'ownerName' | 'plate' | 'model' | 'entryDate'): boolean {
