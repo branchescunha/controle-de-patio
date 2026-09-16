@@ -106,6 +106,26 @@ export class App {
     this.saveVehicles();
   }
 
+  formatDate(date: string): string {
+    const [year, month, day] = date.split('-');
+
+    if (!year || !month || !day) {
+      return date;
+    }
+
+    return `${day}/${month}/${year}`;
+  }
+
+  clearDuplicatePlateError(): void {
+    this.duplicatePlateError = false;
+  }
+
+  isFieldInvalid(controlName: 'ownerName' | 'plate' | 'model' | 'entryDate'): boolean {
+    const control = this.vehicleForm.controls[controlName];
+
+    return control.invalid && (control.touched || this.formSubmitted);
+  }
+
   private saveVehicles(): void {
     localStorage.setItem(this.storageKey, JSON.stringify(this.vehicles));
   }
@@ -122,15 +142,5 @@ export class App {
     } catch {
       this.vehicles = [];
     }
-  }
-
-  clearDuplicatePlateError(): void {
-    this.duplicatePlateError = false;
-  }
-
-  isFieldInvalid(controlName: 'ownerName' | 'plate' | 'model' | 'entryDate'): boolean {
-    const control = this.vehicleForm.controls[controlName];
-
-    return control.invalid && (control.touched || this.formSubmitted);
   }
 }
