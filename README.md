@@ -122,11 +122,7 @@ Tests       15 passed (15)
 - TypeScript
 - HTML5
 - CSS3
-- Angular Reactive Forms
-- localStorage
 - Vitest
-- Prettier
-- Vercel
 
 ## Estrutura do projeto
 
