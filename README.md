@@ -1,59 +1,64 @@
-# ControleDePatio
+# Controle de Pátio
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 22.1.6.
+Aplicação web desenvolvida em Angular para gerenciamento de veículos presentes no pátio de uma oficina. O sistema permite registrar entradas, visualizar os veículos cadastrados, alternar entre diferentes modos de visualização e remover veículos, mantendo os dados persistidos localmente no navegador.
 
-## Development server
+## Demonstração
 
-To start a local development server, run:
+A aplicação está publicada na Vercel:
 
-```bash
-ng serve
+https://controle-de-patio-memora.vercel.app
+
+## Funcionalidades
+
+- Cadastro de entrada de veículos
+- Validação dos campos obrigatórios
+- Feedback visual para campos inválidos
+- Contador de veículos presentes no pátio
+- Visualização dos veículos em cartões
+- Visualização dos veículos em tabela
+- Alternância entre os modos Cartões e Tabela
+- Remoção de veículos
+- Persistência dos dados com localStorage
+- Recuperação automática dos dados ao recarregar a aplicação
+- Estado vazio quando não existem veículos cadastrados
+- Interface responsiva
+- Testes automatizados dos principais comportamentos
+
+## Tecnologias utilizadas
+
+- Angular 22
+- TypeScript
+- HTML5
+- CSS3
+- Reactive Forms
+- localStorage
+- Vitest
+- Prettier
+- Vercel
+
+## Estrutura do projeto
+
+```txt
+controle-de-patio/
+├── .vscode/
+├── public/
+├── src/
+│   ├── app/
+│   │   ├── app.config.ts
+│   │   ├── app.css
+│   │   ├── app.html
+│   │   ├── app.spec.ts
+│   │   └── app.ts
+│   ├── index.html
+│   ├── main.ts
+│   └── styles.css
+├── .editorconfig
+├── .gitignore
+├── .prettierrc
+├── angular.json
+├── package-lock.json
+├── package.json
+├── tsconfig.app.json
+├── tsconfig.json
+└── tsconfig.spec.json
 ```
-
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
-
-## Code scaffolding
-
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
-
-```bash
-ng generate component component-name
-```
-
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
-
-```bash
-ng generate --help
-```
-
-## Building
-
-To build the project run:
-
-```bash
-ng build
-```
-
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
-
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
