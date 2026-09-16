@@ -24,7 +24,7 @@
         </svg>
       </span>
 
-      <span>Veículos no Pátio: 0</span>
+      <span>Veículos no Pátio: {{ vehicles.length }}</span>
     </div>
   </div>
 </header>
@@ -35,7 +35,7 @@
 
     <div class="page-actions">
       <div class="view-toggle">
-        <button type="button" class="active">
+        <button type="button" [class.active]="viewMode === 'cards'" (click)="setViewMode('cards')">
           <svg viewBox="0 0 24 24" aria-hidden="true">
             <rect x="3" y="3" width="8" height="8" rx="1.5" />
             <rect x="13" y="3" width="8" height="8" rx="1.5" />
@@ -46,7 +46,7 @@
           Cartões
         </button>
 
-        <button type="button">
+        <button type="button" [class.active]="viewMode === 'table'" (click)="setViewMode('table')">
           <svg viewBox="0 0 24 24" aria-hidden="true">
             <rect x="3" y="4" width="18" height="16" rx="1.5" />
             <path d="M3 9.5h18M3 15h18M9.5 9.5V20" />
@@ -63,27 +63,104 @@
     </div>
   </section>
 
-  <section class="empty-state">
-    <div class="empty-icon">
-      <svg viewBox="0 0 24 24" aria-hidden="true">
-        <path d="M3 21V9.8a1 1 0 0 1 .45-.84l8-5.3a1 1 0 0 1 1.1 0l8 5.3a1 1 0 0 1 .45.84V21" />
-        <path d="M3 21h18" />
-        <path d="M7 21v-6a1 1 0 0 1 1-1h8a1 1 0 0 1 1 1v6" />
-      </svg>
-    </div>
+  @if (vehicles.length === 0) {
+    <section class="empty-state">
+      <div class="empty-icon">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M3 21V9.8a1 1 0 0 1 .45-.84l8-5.3a1 1 0 0 1 1.1 0l8 5.3a1 1 0 0 1 .45.84V21" />
+          <path d="M3 21h18" />
+          <path d="M7 21v-6a1 1 0 0 1 1-1h8a1 1 0 0 1 1 1v6" />
+        </svg>
+      </div>
 
-    <h2>Pátio vazio no momento</h2>
+      <h2>Pátio vazio no momento</h2>
 
-    <p>
-      Nenhum veículo cadastrado ainda. Registre a primeira entrada para começar a acompanhar o
-      pátio.
-    </p>
+      <p>
+        Nenhum veículo cadastrado ainda. Registre a primeira entrada para começar a acompanhar o
+        pátio.
+      </p>
 
-    <button type="button" class="primary-button" (click)="openVehicleModal()">
-      <span class="plus">+</span>
-      Registrar primeiro veículo
-    </button>
-  </section>
+      <button type="button" class="primary-button" (click)="openVehicleModal()">
+        <span class="plus">+</span>
+        Registrar primeiro veículo
+      </button>
+    </section>
+  } @else if (viewMode === 'cards') {
+    <section class="vehicle-grid">
+      @for (vehicle of vehicles; track vehicle.id) {
+        <article class="vehicle-card" data-testid="vehicle-card">
+          <div class="vehicle-card-header">
+            <div class="vehicle-icon">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path
+                  d="M4 16v-4.5a2 2 0 0 1 .4-1.2l1.9-2.6A2 2 0 0 1 7.9 7h8.2a2 2 0 0 1 1.6.8l1.9 2.6a2 2 0 0 1 .4 1.2V16"
+                />
+                <rect x="2.5" y="14" width="19" height="5.5" rx="1.6" />
+                <circle cx="7" cy="19.5" r="1.6" />
+                <circle cx="17" cy="19.5" r="1.6" />
+              </svg>
+            </div>
+
+            <span class="vehicle-plate">{{ vehicle.plate }}</span>
+          </div>
+
+          <div class="vehicle-card-body">
+            <h2>{{ vehicle.model }}</h2>
+
+            <div class="vehicle-info">
+              <div>
+                <span class="vehicle-label">Proprietário</span>
+                <strong>{{ vehicle.ownerName }}</strong>
+              </div>
+
+              <div>
+                <span class="vehicle-label">Data de entrada</span>
+                <strong>{{ vehicle.entryDate }}</strong>
+              </div>
+            </div>
+
+            <div class="vehicle-card-actions">
+              <button type="button" class="remove-button" (click)="removeVehicle(vehicle.id)">
+                Remover
+              </button>
+            </div>
+          </div>
+        </article>
+      }
+    </section>
+  } @else {
+    <section class="vehicle-table-container" data-testid="vehicle-table">
+      <table class="vehicle-table">
+        <thead>
+          <tr>
+            <th>Proprietário</th>
+            <th>Placa</th>
+            <th>Modelo</th>
+            <th>Data de entrada</th>
+            <th>Ações</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          @for (vehicle of vehicles; track vehicle.id) {
+            <tr>
+              <td>{{ vehicle.ownerName }}</td>
+              <td>
+                <span class="vehicle-plate">{{ vehicle.plate }}</span>
+              </td>
+              <td>{{ vehicle.model }}</td>
+              <td>{{ vehicle.entryDate }}</td>
+              <td>
+                <button type="button" class="remove-button" (click)="removeVehicle(vehicle.id)">
+                  Remover
+                </button>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </section>
+  }
 </main>
 
 @if (isVehicleModalOpen) {
@@ -108,6 +185,7 @@
       <form [formGroup]="vehicleForm" (ngSubmit)="submitVehicle()">
         <div class="form-field">
           <label for="ownerName">Nome do proprietário</label>
+
           <input
             id="ownerName"
             type="text"
@@ -123,6 +201,7 @@
 
         <div class="form-field">
           <label for="plate">Placa do veículo</label>
+
           <input
             id="plate"
             type="text"
@@ -138,6 +217,7 @@
 
         <div class="form-field">
           <label for="model">Modelo</label>
+
           <input
             id="model"
             type="text"
@@ -153,6 +233,7 @@
 
         <div class="form-field">
           <label for="entryDate">Data de entrada</label>
+
           <input
             id="entryDate"
             type="date"
