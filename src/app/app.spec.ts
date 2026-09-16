@@ -321,4 +321,36 @@ describe('App', () => {
     expect(storedVehicles).toHaveLength(1);
     expect(storedVehicles[0].plate).toBe('DEF4G56');
   });
+
+  it('should reject text fields containing only whitespace', () => {
+    const fixture = TestBed.createComponent(App);
+    const app = fixture.componentInstance;
+
+    app.vehicleForm.setValue({
+      ownerName: '   ',
+      plate: 'ABC1D23',
+      model: 'Honda Civic',
+      entryDate: '2026-09-16',
+    });
+
+    expect(app.vehicleForm.controls.ownerName.invalid).toBe(true);
+
+    app.vehicleForm.setValue({
+      ownerName: 'Maria Souza',
+      plate: '   ',
+      model: 'Honda Civic',
+      entryDate: '2026-09-16',
+    });
+
+    expect(app.vehicleForm.controls.plate.invalid).toBe(true);
+
+    app.vehicleForm.setValue({
+      ownerName: 'Maria Souza',
+      plate: 'ABC1D23',
+      model: '   ',
+      entryDate: '2026-09-16',
+    });
+
+    expect(app.vehicleForm.controls.model.invalid).toBe(true);
+  });
 });

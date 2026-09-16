@@ -27,15 +27,15 @@ export class App {
   vehicleForm = new FormGroup({
     ownerName: new FormControl('', {
       nonNullable: true,
-      validators: [Validators.required],
+      validators: [Validators.required, Validators.pattern(/\S/)],
     }),
     plate: new FormControl('', {
       nonNullable: true,
-      validators: [Validators.required],
+      validators: [Validators.required, Validators.pattern(/\S/)],
     }),
     model: new FormControl('', {
       nonNullable: true,
-      validators: [Validators.required],
+      validators: [Validators.required, Validators.pattern(/\S/)],
     }),
     entryDate: new FormControl('', {
       nonNullable: true,
