@@ -87,7 +87,7 @@
     </section>
   } @else if (viewMode === 'cards') {
     <section class="vehicle-grid">
-      @for (vehicle of vehicles; track vehicle.id) {
+      @for (vehicle of vehicles; track vehicle.plate) {
         <article class="vehicle-card" data-testid="vehicle-card">
           <div class="vehicle-card-header">
             <div class="vehicle-icon">
@@ -120,7 +120,7 @@
             </div>
 
             <div class="vehicle-card-actions">
-              <button type="button" class="remove-button" (click)="removeVehicle(vehicle.id)">
+              <button type="button" class="remove-button" (click)="removeVehicle(vehicle.plate)">
                 Remover
               </button>
             </div>
@@ -142,7 +142,7 @@
         </thead>
 
         <tbody>
-          @for (vehicle of vehicles; track vehicle.id) {
+          @for (vehicle of vehicles; track vehicle.plate) {
             <tr>
               <td>{{ vehicle.ownerName }}</td>
               <td>
@@ -151,7 +151,7 @@
               <td>{{ vehicle.model }}</td>
               <td>{{ vehicle.entryDate }}</td>
               <td>
-                <button type="button" class="remove-button" (click)="removeVehicle(vehicle.id)">
+                <button type="button" class="remove-button" (click)="removeVehicle(vehicle.plate)">
                   Remover
                 </button>
               </td>
@@ -207,11 +207,14 @@
             type="text"
             formControlName="plate"
             placeholder="Ex: ABC1D23"
-            [class.input-error]="isFieldInvalid('plate')"
+            [class.input-error]="isFieldInvalid('plate') || duplicatePlateError"
+            (input)="clearDuplicatePlateError()"
           />
 
           @if (isFieldInvalid('plate')) {
             <span class="field-error">Informe a placa do veículo.</span>
+          } @else if (duplicatePlateError) {
+            <span class="field-error">Já existe um veículo cadastrado com esta placa.</span>
           }
         </div>
 
